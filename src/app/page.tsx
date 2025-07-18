@@ -1,5 +1,6 @@
 import { client } from 'lib/prismicClient';
 import * as prismicH from '@prismicio/helpers';
+import Image from "next/image";
 
 export default async function Home() {
   const articles = await client.getAllByType('article');
@@ -16,7 +17,10 @@ export default async function Home() {
   {articles.length === 0 && <p className="text-center text-gray-600">No articles found.</p>}
 
   <ul className="flex flex-col space-y-4 max-w-4xl mx-auto list-none p-0">
-    {articles.map((article: any) => (
+    {articles.map( 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+      (article: any) => (
       <li
         key={article.id}
         className="bg-white shadow-lg rounded border-2 border-gray-300 p-6 transition-transform hover:scale-102 hover:shadow-2xl"
@@ -24,11 +28,13 @@ export default async function Home() {
         <h2 className="text-2xl font-semibold mb-2 text-gray-900">{article.data.title}</h2>
         <p className="text-gray-700 mb-4">{prismicH.asText(article.data.summary)}</p>
         {article.data.image?.url && (
-          <img
-            src={article.data.image.url}
-            alt={article.data.title}
-            className="rounded-lg max-w-full h-auto"
-          />
+         <Image
+    src={article.data.image.url}
+    alt={article.data.title}
+    width={150}       // specify width and height or layout="responsive"
+    height={100}
+    className="rounded-lg max-w-full h-auto"
+  />
         )}
       </li>
     ))}
